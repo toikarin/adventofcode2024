@@ -7,4 +7,5 @@ requires-python = ">=3.13"
 dependencies = [
     "black>=24.10.0",
     "mypy>=1.13.0",
+    "pyflakes>=3.2.0",
 ]
