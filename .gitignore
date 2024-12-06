@@ -6,8 +6,8 @@ dist/
 wheels/
 *.egg-info
 
-*/example_input
-*/input
+*/example_input*
+*/input*
 
 # Virtual environments
 .venv
