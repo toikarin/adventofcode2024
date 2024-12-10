@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 
 import sys
+from collections import namedtuple
 
 
-def path(m: list[list[int]], pos: tuple[int, int]) -> list[list[tuple[int, int]]]:
-    current_value = m[pos[0]][pos[1]]
+Coord = namedtuple("Coord", ["x", "y"])
+
+
+def path(m: list[list[int]], pos: Coord) -> list[list[Coord]]:
+    current_value = m[pos.x][pos.y]
 
     # Trail end, don't travel anymore
     if current_value == 9:
@@ -14,17 +18,17 @@ def path(m: list[list[int]], pos: tuple[int, int]) -> list[list[tuple[int, int]]
     next_value = current_value + 1
 
     # Up
-    if pos[0] > 0 and m[pos[0] - 1][pos[1]] == next_value:
-        found_paths.extend(path(m, (pos[0] - 1, pos[1])))
+    if pos.x > 0 and m[pos.x - 1][pos.y] == next_value:
+        found_paths.extend(path(m, Coord(pos.x - 1, pos.y)))
     # Down
-    if pos[0] < len(m) - 1 and m[pos[0] + 1][pos[1]] == next_value:
-        found_paths.extend(path(m, (pos[0] + 1, pos[1])))
+    if pos.x < len(m) - 1 and m[pos.x + 1][pos.y] == next_value:
+        found_paths.extend(path(m, Coord(pos.x + 1, pos.y)))
     # Left
-    if pos[1] > 0 and m[pos[0]][pos[1] - 1] == next_value:
-        found_paths.extend(path(m, (pos[0], pos[1] - 1)))
+    if pos.y > 0 and m[pos.x][pos.y - 1] == next_value:
+        found_paths.extend(path(m, Coord(pos.x, pos.y - 1)))
     # Right
-    if pos[1] < len(m[pos[0]]) - 1 and m[pos[0]][pos[1] + 1] == next_value:
-        found_paths.extend(path(m, (pos[0], pos[1] + 1)))
+    if pos.y < len(m[pos.x]) - 1 and m[pos.x][pos.y + 1] == next_value:
+        found_paths.extend(path(m, Coord(pos.x, pos.y + 1)))
 
     # Create and return new valid paths with current position
     return [[pos] + found_path for found_path in found_paths]
@@ -49,7 +53,7 @@ def solve(filename: str) -> None:
         # Check if this line contains any start positions
         for y, char in enumerate(trailmap[x]):
             if trailmap[x][y] == 0:
-                start_positions.append((x, y))
+                start_positions.append(Coord(x, y))
 
     total = 0
     for start_position in start_positions:
